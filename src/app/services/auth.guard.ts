@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  
+
   constructor( private authService: AuthService, private router: Router ) {}
 
   canActivate(): Observable<boolean> {
