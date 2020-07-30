@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.reducer';
+import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -6,11 +11,26 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  nombre: string = '';
+  userSubs: Subscription;
+
+  constructor( private store: Store<AppState>) { }
 
   ngOnInit(): void {
+
+    this.store.select('user')
+      .pipe(
+        filter( ({user}) => user != null )
+      )
+      .subscribe( ({ user }) => this.nombre = user.nombre );
+  }
+
+  ngOnDestroy(): void {
+
+    this.userSubs.unsubscribe();
+    
   }
 
 }
